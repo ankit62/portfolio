@@ -1,6 +1,8 @@
-import React from "react";
+import React, { FormEvent, useState, useRef } from "react";
 import Navbar from "./components/Navbar";
 import AnimatedSection from "./components/AnimatedSection";
+import emailjs from "@emailjs/browser";
+import { Alert, Snackbar, CircularProgress } from "@mui/material";
 import image from "./icons/image.png";
 import facebook from "./icons/facebook.png";
 import instagram from "./icons/instagram.png";
@@ -19,6 +21,18 @@ import sqlIcon from "./icons/tech-icons/sql.svg";
 import "./App.css";
 
 const App: React.FC = () => {
+  // Email states
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertState, setAlertState] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error";
+  }>({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
   // Create refs for each experience item
   const seniorEngRef = useVisibilityAnimation();
   const softwareEngRef = useVisibilityAnimation();
@@ -39,7 +53,7 @@ const App: React.FC = () => {
   };
 
   const contactHandler = () => {
-    const element = document.getElementById('contact');
+    const element = document.getElementById("contact");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
@@ -470,15 +484,94 @@ const App: React.FC = () => {
           Ready to bring your next project to life? Let's discuss how we can
           collaborate!
         </p>
-        <form className="contact-form">
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
+        <form
+          className="contact-form"
+          ref={useRef<HTMLFormElement>(null)}
+          onSubmit={async (e: FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const formData = new FormData(form);
+
+            // Log form data
+            console.log({
+              name: formData.get("user_name"),
+              email: formData.get("user_email"),
+              message: formData.get("message"),
+            });
+
+            setIsLoading(true);
+
+            try {
+              // Initialize EmailJS
+              emailjs.init("47ffJpzLcbOgGg16F");
+
+              // Send email - auto-reply will be handled by EmailJS template
+              await emailjs.send("service_uxaz3fq", "template_a3k82vi", {
+                name: formData.get('user_name'),
+                email: formData.get('user_email'),
+                message: formData.get("message"),
+              });
+
+              setAlertState({
+                open: true,
+                message:
+                  "Thank you for your message! Check your email for confirmation.",
+                severity: "success",
+              });
+              form.reset();
+            } catch (error) {
+              console.error("Error:", error);
+              setAlertState({
+                open: true,
+                message:
+                  "Sorry, there was an error sending your message. Please try again.",
+                severity: "error",
+              });
+            } finally {
+              setIsLoading(false);
+            }
+          }}
+        >
+          <input
+            type="text"
+            name="user_name"
+            placeholder="Your Name"
+            required
+          />
+          <input
+            type="email"
+            name="user_email"
+            placeholder="Your Email"
+            required
+          />
           <textarea
+            name="message"
             placeholder="Tell me about your project..."
             required
           ></textarea>
-          <button type="submit">Send Message</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Send Message"
+            )}
+          </button>
         </form>
+
+        {/* Alert Component */}
+        <Snackbar
+          open={alertState.open}
+          autoHideDuration={3000}
+          onClose={() => setAlertState((prev) => ({ ...prev, open: false }))}
+        >
+          <Alert
+            onClose={() => setAlertState((prev) => ({ ...prev, open: false }))}
+            severity={alertState.severity}
+            sx={{ width: "100%" }}
+          >
+            {alertState.message}
+          </Alert>
+        </Snackbar>
       </AnimatedSection>
     </div>
   );
