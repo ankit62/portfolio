@@ -11,11 +11,11 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      {/* {isLoading ? (
+      {isLoading ? (
         <LoadingScreen onLoadingComplete={handleLoadingComplete} />
-      ) : ( */}
+      ) : (
         <Portfolio />
-      {/* )} */}
+     )}
     </div>
   );
 };
