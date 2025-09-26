@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useRef } from "react";
+import React, { FormEvent, useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import AnimatedSection from "../components/AnimatedSection";
 import emailjs from "@emailjs/browser";
@@ -20,7 +20,7 @@ import expressIcon from "../icons/tech-icons/express.svg";
 import sqlIcon from "../icons/tech-icons/sql.svg";
 
 const Portfolio = () => {
-  // Email states
+  const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertState, setAlertState] = useState<{
     open: boolean;
@@ -57,24 +57,82 @@ const Portfolio = () => {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   return (
     <>
       {/* Navigation Bar */}
       <Navbar />
-
-      {/* Hero Section */}
+      {/* Hero Section - Option 1: Animated Typography */}
       <AnimatedSection
         animationType="fadeInUp"
-        className="hero-section"
+        className="hero-section dynamic-hero"
         delay={0}
         id="home"
       >
-        <h1>Welcome to My Portfolio</h1>
-        <p>
-          I'm a developer passionate about creating amazing experiences with
-          modern web technologies
-        </p>
-        <button onClick={contactHandler}>Get In Touch</button>
+        <div className="hero-content">
+          <div className="hero-greeting">
+            <span className="greeting-line">Hello, I'm</span>
+            <h1 className="hero-name">
+              <span className="name-part">Ankit</span>
+              <span className="name-part">Sinha</span>
+            </h1>
+          </div>
+
+          <div className="hero-role">
+            <span className="role-prefix">I build</span>
+            <div className="rotating-text">
+              <span className="rotate-item active">
+                amazing web experiences
+              </span>
+              <span className="rotate-item">scalable applications</span>
+              <span className="rotate-item">modern user interfaces</span>
+              <span className="rotate-item">digital solutions</span>
+            </div>
+          </div>
+
+          <p className="hero-description">
+            A passionate full-stack developer specializing in React, TypeScript,
+            and modern web technologies. I love turning complex problems into
+            simple, beautiful designs.
+          </p>
+
+          <div className="hero-actions">
+            <button className="cta-primary" onClick={contactHandler}>
+              <span>Get In Touch</span>
+              <svg className="arrow-icon" viewBox="0 0 24 24">
+                <path d="M5 12h14m-7-7l7 7-7 7" />
+              </svg>
+            </button>
+            <button className="cta-secondary">
+              <span>View My Work</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Animated background elements */}
+        <div className="hero-background">
+          <div className="floating-shapes">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className={`shape shape-${i + 1}`}></div>
+            ))}
+          </div>
+          <div className="code-lines">
+            <div className="code-line">{"<Developer />"}</div>
+            <div className="code-line">{"{ creativity: true }"}</div>
+            <div className="code-line">{"console.log('Hello World!')"}</div>
+          </div>
+        </div>
       </AnimatedSection>
 
       {/* About Section */}
@@ -124,71 +182,69 @@ const Portfolio = () => {
           </div>
 
           <div className="about-illustration">
-            <img
-              className="animated-image"
-              src={image}
-              alt="about"
-              height={600}
-              width={600}
-            />
+            <img className="animated-image" src={image} alt="about" />
           </div>
         </div>
       </AnimatedSection>
 
-      {/* Skills Section */}
-      <AnimatedSection
-        animationType="fadeInRight"
-        className="skills-section"
-        delay={200}
-      >
-        <h2>Technical Skills</h2>
-        <div className="skills-grid">
-          <div className="skill-item">
-            <img src={reactIcon} alt="React" className="skill-icon" />
-            <span>React JS</span>
+      {/* Skills Section - Option 2: 3D Flip Cards */}
+      {!isMobile && (
+        <AnimatedSection
+          animationType="fadeInLeft"
+          className="skills-section flip-cards"
+          delay={200}
+        >
+          <h2>Technical Skills</h2>
+          <div className="skills-grid flip-grid">
+            {[
+              { icon: reactIcon, name: "React JS", color: "#61DAFB" },
+              {
+                icon: javascriptIcon,
+                name: "Javascript (ES6)",
+                color: "#F7DF1E",
+              },
+              { icon: typescriptIcon, name: "Typescript", color: "#3178C6" },
+              { icon: html5Icon, name: "HTML5", color: "#E34F26" },
+              { icon: css3Icon, name: "CSS3", color: "#1572B6" },
+              { icon: pythonIcon, name: "Python", color: "#3776AB" },
+              { icon: gitIcon, name: "Git", color: "#F05032" },
+              { icon: reactIcon, name: "React Native", color: "#61DAFB" },
+              { icon: nodejsIcon, name: "Node.js", color: "#339933" },
+              { icon: expressIcon, name: "Express", color: "#000000" },
+              { icon: sqlIcon, name: "SQL", color: "#4479A1" },
+            ].map((skill, index) => (
+              <div
+                key={index}
+                className="skill-flip-container"
+                style={{ "--delay": index } as React.CSSProperties}
+              >
+                <div className="skill-flip-card">
+                  <div
+                    className="skill-flip-front"
+                    style={
+                      { "--skill-color": skill.color } as React.CSSProperties
+                    }
+                  >
+                    <img
+                      src={skill.icon}
+                      alt={skill.name}
+                      className="skill-icon"
+                    />
+                  </div>
+                  <div
+                    className="skill-flip-back"
+                    style={
+                      { "--skill-color": skill.color } as React.CSSProperties
+                    }
+                  >
+                    <span>{skill.name}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="skill-item">
-            <img src={javascriptIcon} alt="JavaScript" className="skill-icon" />
-            <span>Javascript (ES6)</span>
-          </div>
-          <div className="skill-item">
-            <img src={typescriptIcon} alt="TypeScript" className="skill-icon" />
-            <span>Typescript</span>
-          </div>
-          <div className="skill-item">
-            <img src={html5Icon} alt="HTML5" className="skill-icon" />
-            <span>HTML5</span>
-          </div>
-          <div className="skill-item">
-            <img src={css3Icon} alt="CSS3" className="skill-icon" />
-            <span>CSS3</span>
-          </div>
-          <div className="skill-item">
-            <img src={pythonIcon} alt="Python" className="skill-icon" />
-            <span>Python</span>
-          </div>
-          <div className="skill-item">
-            <img src={gitIcon} alt="Git" className="skill-icon" />
-            <span>Git</span>
-          </div>
-          <div className="skill-item">
-            <img src={reactIcon} alt="React Native" className="skill-icon" />
-            <span>React Native</span>
-          </div>
-          <div className="skill-item">
-            <img src={nodejsIcon} alt="Node.js" className="skill-icon" />
-            <span>Node.js</span>
-          </div>
-          <div className="skill-item">
-            <img src={expressIcon} alt="Express" className="skill-icon" />
-            <span>Express</span>
-          </div>
-          <div className="skill-item">
-            <img src={sqlIcon} alt="SQL" className="skill-icon" />
-            <span>SQL</span>
-          </div>
-        </div>
-      </AnimatedSection>
+        </AnimatedSection>
+      )}
 
       {/* Experience Section */}
       <AnimatedSection
