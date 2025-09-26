@@ -8,16 +8,8 @@ import facebook from "../icons/facebook.png";
 import instagram from "../icons/instagram.png";
 import linkedin from "../icons/linkedin.png";
 import { useVisibilityAnimation } from "../hooks/useVisibilityAnimation";
-import reactIcon from "../icons/tech-icons/react.svg";
-import javascriptIcon from "../icons/tech-icons/javascript.svg";
-import typescriptIcon from "../icons/tech-icons/typescript.svg";
-import html5Icon from "../icons/tech-icons/html5.svg";
-import css3Icon from "../icons/tech-icons/css3.svg";
-import pythonIcon from "../icons/tech-icons/python.svg";
-import gitIcon from "../icons/tech-icons/git.svg";
-import nodejsIcon from "../icons/tech-icons/nodejs.svg";
-import expressIcon from "../icons/tech-icons/express.svg";
-import sqlIcon from "../icons/tech-icons/sql.svg";
+import FloatingSkillsSection from "../components/FloatingSkillsSection";
+
 
 const Portfolio = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -188,63 +180,7 @@ const Portfolio = () => {
       </AnimatedSection>
 
       {/* Skills Section - Option 2: 3D Flip Cards */}
-      {!isMobile && (
-        <AnimatedSection
-          animationType="fadeInLeft"
-          className="skills-section flip-cards"
-          delay={200}
-        >
-          <h2>Technical Skills</h2>
-          <div className="skills-grid flip-grid">
-            {[
-              { icon: reactIcon, name: "React JS", color: "#61DAFB" },
-              {
-                icon: javascriptIcon,
-                name: "Javascript (ES6)",
-                color: "#F7DF1E",
-              },
-              { icon: typescriptIcon, name: "Typescript", color: "#3178C6" },
-              { icon: html5Icon, name: "HTML5", color: "#E34F26" },
-              { icon: css3Icon, name: "CSS3", color: "#1572B6" },
-              { icon: pythonIcon, name: "Python", color: "#3776AB" },
-              { icon: gitIcon, name: "Git", color: "#F05032" },
-              { icon: reactIcon, name: "React Native", color: "#61DAFB" },
-              { icon: nodejsIcon, name: "Node.js", color: "#339933" },
-              { icon: expressIcon, name: "Express", color: "#000000" },
-              { icon: sqlIcon, name: "SQL", color: "#4479A1" },
-            ].map((skill, index) => (
-              <div
-                key={index}
-                className="skill-flip-container"
-                style={{ "--delay": index } as React.CSSProperties}
-              >
-                <div className="skill-flip-card">
-                  <div
-                    className="skill-flip-front"
-                    style={
-                      { "--skill-color": skill.color } as React.CSSProperties
-                    }
-                  >
-                    <img
-                      src={skill.icon}
-                      alt={skill.name}
-                      className="skill-icon"
-                    />
-                  </div>
-                  <div
-                    className="skill-flip-back"
-                    style={
-                      { "--skill-color": skill.color } as React.CSSProperties
-                    }
-                  >
-                    <span>{skill.name}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </AnimatedSection>
-      )}
+      {!isMobile && <FloatingSkillsSection />}
 
       {/* Experience Section */}
       <AnimatedSection

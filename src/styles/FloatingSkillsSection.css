@@ -1,0 +1,842 @@
+/* Space Skills Section - Enhanced with Planet Skills */
+.skills-section.space-skills {
+  background: radial-gradient(
+      ellipse at center,
+      #1a1a2e 0%,
+      #16213e 50%,
+      #0f0f23 100%
+    ),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="10" cy="20" r="0.5" fill="white" opacity="0.8"/><circle cx="180" cy="30" r="0.3" fill="white" opacity="0.6"/><circle cx="30" cy="170" r="0.4" fill="white" opacity="0.9"/><circle cx="150" cy="50" r="0.2" fill="white" opacity="0.7"/></svg>');
+  padding: 100px 20px;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.skills-section.space-skills h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 0 20px #64ffda, 0 0 40px #64ffda, 0 0 60px #64ffda;
+  font-family: "Orbitron", "Arial", sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 10;
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+.skills-subtitle {
+  text-align: center;
+  color: #ccd6f6;
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 10;
+  opacity: 0.9;
+}
+
+.space-container {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  cursor: crosshair;
+  overflow: visible;
+}
+
+/* Rocket Warning Console */
+.rocket-warning {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  animation: warningAppear 0.3s ease-out;
+}
+
+.warning-console {
+  background: linear-gradient(45deg, #ff0000, #cc0000),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.1) 2px,
+      rgba(255, 255, 255, 0.1) 4px
+    );
+  border: 3px solid #ff6666;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 0 50px #ff0000, inset 0 0 20px rgba(255, 255, 255, 0.1);
+  font-family: "Courier New", monospace;
+  color: #ffffff;
+  text-align: center;
+  min-width: 400px;
+  animation: warningPulse 0.5s ease-in-out infinite alternate;
+  backdrop-filter: blur(10px);
+}
+
+.warning-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px #ffffff;
+  letter-spacing: 2px;
+}
+
+.warning-text {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  animation: pixelatedGlow 1s ease-in-out infinite alternate;
+  letter-spacing: 1px;
+  line-height: 1.4;
+}
+
+.warning-footer {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  animation: blink 1s infinite;
+}
+
+/* Space Background Elements */
+.space-elements {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: calc(100% + 200px);
+  height: calc(100% + 200px);
+  z-index: 1;
+}
+
+/* Enhanced Stars */
+.star {
+  position: absolute;
+  background: radial-gradient(circle, #ffffff 0%, #ffffff 40%, transparent 70%);
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+}
+
+/* Enhanced Rockets with proper pointer events */
+.rocket {
+  position: absolute;
+  font-size: 2.5rem;
+  z-index: 15;
+  cursor: grab;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+  transition: all 0.3s ease;
+  pointer-events: auto; /* FIXED: Enable pointer events */
+  user-select: none;
+}
+
+.rocket:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 1));
+  cursor: grab;
+}
+
+.rocket:active {
+  cursor: grabbing;
+}
+
+.rocket.frozen {
+  animation-play-state: paused !important;
+  filter: drop-shadow(0 0 30px #ff0000);
+  transform: scale(1.2);
+  cursor: grabbing;
+}
+
+.rocket-1 {
+  top: 20%;
+  left: -10%;
+  transform: rotate(-10deg);
+  animation: rocketFlyCurved 20s ease-in-out infinite;
+}
+
+.rocket-2 {
+  top: 70%;
+  right: -10%;
+  transform: rotate(15deg);
+  animation: ufoFloatCurved 18s ease-in-out infinite;
+}
+
+/* Asteroids */
+.asteroid {
+  position: absolute;
+  font-size: 1.8rem;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+  pointer-events: none;
+}
+
+.asteroid-1 {
+  top: 30%;
+  left: -8%;
+  animation: asteroidDriftCurved 25s linear infinite;
+}
+
+.asteroid-2 {
+  top: 80%;
+  right: -8%;
+  animation: asteroidDriftCurved 30s linear infinite reverse;
+  animation-delay: 5s;
+}
+
+.asteroid-3 {
+  top: 15%;
+  left: 60%;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+/* Background Planets */
+.planet {
+  position: absolute;
+  font-size: 3.5rem;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+  animation: planetRotate 40s linear infinite;
+  pointer-events: none;
+}
+
+.planet-1 {
+  top: 5%;
+  right: 10%;
+}
+
+.planet-2 {
+  bottom: 15%;
+  left: 5%;
+  animation-delay: 20s;
+}
+
+.planet-3 {
+  top: 50%;
+  right: 5%;
+  font-size: 2.5rem;
+  animation-delay: 30s;
+}
+
+/* Enhanced Nebula Effects */
+.nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0.4;
+  animation: nebulaFloat 30s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.nebula-1 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, #ff6b6b, transparent);
+  top: 15%;
+  left: 25%;
+}
+
+.nebula-2 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #4ecdc4, transparent);
+  bottom: 25%;
+  right: 15%;
+  animation-delay: 10s;
+}
+
+.nebula-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #a8e6cf, transparent);
+  top: 60%;
+  left: 70%;
+  animation-delay: 20s;
+}
+
+.nebula-4 {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, #ffd93d, transparent);
+  top: 40%;
+  left: 10%;
+  animation-delay: 15s;
+}
+
+/* Planet-like Floating Skills */
+.floating-skill {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  cursor: grab;
+  z-index: 20;
+  transition: transform 0.1s ease-out;
+}
+
+.floating-skill.dragging {
+  cursor: grabbing;
+  z-index: 50;
+}
+
+.skill-planet {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planet-surface {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    color-mix(in srgb, var(--skill-color) 80%, white) 0%,
+    var(--skill-color) 40%,
+    color-mix(in srgb, var(--skill-color) 70%, black) 100%
+  );
+  box-shadow: 0 0 20px color-mix(in srgb, var(--skill-color) 50%, transparent),
+    inset -8px -8px 15px rgba(0, 0, 0, 0.4),
+    inset 5px 5px 10px rgba(255, 255, 255, 0.2);
+  animation: planetFloat 4s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.planet-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(2px);
+}
+
+.skill-icon {
+  width: 35px;
+  height: 35px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) brightness(1.1);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 4;
+}
+
+.planet-atmosphere {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 60%,
+    color-mix(in srgb, var(--skill-color) 30%, transparent) 80%,
+    color-mix(in srgb, var(--skill-color) 10%, transparent) 100%
+  );
+  z-index: 2;
+  animation: atmosphereGlow 3s ease-in-out infinite alternate;
+}
+
+.planet-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(75deg);
+  width: 90px;
+  height: 90px;
+  border: 2px solid color-mix(in srgb, var(--skill-color) 40%, transparent);
+  border-radius: 50%;
+  z-index: 1;
+  animation: ringRotate 6s linear infinite;
+}
+
+.planet-rings::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid color-mix(in srgb, var(--skill-color) 20%, transparent);
+  border-radius: 50%;
+}
+
+.planet-shadow {
+  position: absolute;
+  top: 20%;
+  right: 15%;
+  width: 20px;
+  height: 35px;
+  background: elliptical-gradient(
+    ellipse,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  transform: rotate(-15deg);
+  z-index: 2;
+}
+
+.floating-skill:hover .planet-surface {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--skill-color) 70%, transparent),
+    inset -8px -8px 15px rgba(0, 0, 0, 0.4),
+    inset 5px 5px 10px rgba(255, 255, 255, 0.3);
+}
+
+.floating-skill:hover .skill-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7)) brightness(1.2);
+}
+
+.skill-tooltip {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  border: 1px solid var(--skill-color);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--skill-color) 50%, transparent),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+.floating-skill:hover .skill-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+/* Enhanced Animations */
+@keyframes warningAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes warningPulse {
+  0% {
+    box-shadow: 0 0 30px #ff0000, inset 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 50px #ff0000, inset 0 0 30px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes pixelatedGlow {
+  0% {
+    text-shadow: 0 0 10px #ffffff;
+  }
+  100% {
+    text-shadow: 0 0 20px #ffffff, 0 0 30px #ff0000;
+  }
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes titleGlow {
+  0% {
+    text-shadow: 0 0 20px #64ffda, 0 0 40px #64ffda;
+  }
+  100% {
+    text-shadow: 0 0 30px #64ffda, 0 0 60px #64ffda, 0 0 90px #64ffda;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  25% {
+    opacity: 0.8;
+    transform: scale(1.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  75% {
+    opacity: 0.6;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes planetFloat {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+@keyframes atmosphereGlow {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ringRotate {
+  0% {
+    transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg);
+  }
+}
+
+@keyframes rocketFlyCurved {
+  0% {
+    transform: translateX(-150px) translateY(0px) rotate(-10deg);
+  }
+  25% {
+    transform: translateX(25vw) translateY(-80px) rotate(15deg);
+  }
+  50% {
+    transform: translateX(50vw) translateY(-40px) rotate(-5deg);
+  }
+  75% {
+    transform: translateX(75vw) translateY(-100px) rotate(20deg);
+  }
+  100% {
+    transform: translateX(calc(100vw + 150px)) translateY(-20px) rotate(10deg);
+  }
+}
+
+@keyframes ufoFloatCurved {
+  0% {
+    transform: translateX(150px) translateY(0px) rotate(15deg);
+  }
+  25% {
+    transform: translateX(-20vw) translateY(-60px) rotate(-10deg);
+  }
+  50% {
+    transform: translateX(-45vw) translateY(-20px) rotate(5deg);
+  }
+  75% {
+    transform: translateX(-70vw) translateY(-80px) rotate(-15deg);
+  }
+  100% {
+    transform: translateX(calc(-100vw - 150px)) translateY(-10px) rotate(-5deg);
+  }
+}
+
+@keyframes asteroidDriftCurved {
+  0% {
+    transform: translateX(-100px) translateY(0px) rotate(0deg);
+  }
+  20% {
+    transform: translateX(20vw) translateY(-30px) rotate(72deg);
+  }
+  40% {
+    transform: translateX(40vw) translateY(20px) rotate(144deg);
+  }
+  60% {
+    transform: translateX(60vw) translateY(-40px) rotate(216deg);
+  }
+  80% {
+    transform: translateX(80vw) translateY(10px) rotate(288deg);
+  }
+  100% {
+    transform: translateX(calc(100vw + 100px)) translateY(-15px) rotate(360deg);
+  }
+}
+
+@keyframes planetRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nebulaFloat {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(40px, -30px) scale(1.1) rotate(90deg);
+  }
+  50% {
+    transform: translate(-20px, 40px) scale(0.9) rotate(180deg);
+  }
+  75% {
+    transform: translate(-30px, -20px) scale(1.05) rotate(270deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .skills-section.space-skills {
+    padding: 80px 10px;
+  }
+
+  .skills-section.space-skills h2 {
+    font-size: 2.2rem;
+  }
+
+  .space-container {
+    height: 500px;
+  }
+
+  .warning-console {
+    min-width: 300px;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .floating-skill {
+    width: 70px;
+    height: 70px;
+  }
+
+  .planet-surface {
+    width: 60px;
+    height: 60px;
+  }
+
+  .skill-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .rocket,
+  .planet {
+    font-size: 2rem;
+  }
+
+  .asteroid {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .space-container {
+    height: 400px;
+  }
+
+  .warning-console {
+    min-width: 250px;
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .floating-skill {
+    width: 60px;
+    height: 60px;
+  }
+
+  .planet-surface {
+    width: 50px;
+    height: 50px;
+  }
+
+  .skill-icon {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Add to existing CSS */
+
+/* Earth Warning Display */
+.earth-warning {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  animation: earthWarningAppear 0.4s ease-out;
+}
+
+.earth-console {
+  background: linear-gradient(45deg, #ffffff, #e0e0e0),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.1) 2px,
+      rgba(0, 0, 0, 0.1) 4px
+    ) !important;
+  border: 3px solid #4caf50 !important;
+  color: #2e7d32 !important;
+  box-shadow: 0 0 50px #4caf50, inset 0 0 20px rgba(255, 255, 255, 0.8) !important;
+  animation: earthWarningPulse 0.6s ease-in-out infinite alternate !important;
+}
+
+.earth-console .warning-header {
+  color: #1b5e20 !important;
+  text-shadow: 0 0 10px #4caf50 !important;
+}
+
+.earth-console .warning-text {
+  color: #2e7d32 !important;
+  animation: earthPixelatedGlow 1.2s ease-in-out infinite alternate !important;
+  font-weight: bold;
+}
+
+.earth-console .warning-footer {
+  color: #1b5e20 !important;
+  animation: earthBlink 1.2s infinite !important;
+}
+
+/* Rocket Warning Display - Updated */
+.rocket-warning {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  animation: warningAppear 0.3s ease-out;
+}
+
+.rocket-console {
+  background: linear-gradient(45deg, #ff0000, #cc0000),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.1) 2px,
+      rgba(255, 255, 255, 0.1) 4px
+    );
+  border: 3px solid #ff6666;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 0 50px #ff0000, inset 0 0 20px rgba(255, 255, 255, 0.1);
+  font-family: "Courier New", monospace;
+  color: #ffffff;
+  text-align: center;
+  min-width: 400px;
+  animation: warningPulse 0.5s ease-in-out infinite alternate;
+  backdrop-filter: blur(10px);
+}
+
+.warning-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px #ffffff;
+  letter-spacing: 2px;
+}
+
+.warning-text {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  animation: pixelatedGlow 1s ease-in-out infinite alternate;
+  letter-spacing: 1px;
+  line-height: 1.4;
+  min-height: 60px; /* Ensure consistent height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease; /* Smooth text transitions */
+}
+
+.warning-footer {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  animation: blink 1s infinite;
+}
+
+/* Enhanced Earth Planet */
+/* Earth Warning Display - Fixed Animation */
+.earth-warning {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  animation: earthWarningAppear 0.4s ease-out;
+}
+
+/* UFO Warning Display - Fixed Animation */
+.ufo-warning {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  animation: ufoWarningAppear 0.4s ease-out;
+}
+
+/* Fixed Earth Warning Animation */
+@keyframes earthWarningAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Fixed UFO Warning Animation */
+@keyframes ufoWarningAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Keep the existing rocket warning animation as reference */
+@keyframes warningAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
