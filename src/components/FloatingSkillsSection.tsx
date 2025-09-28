@@ -385,6 +385,7 @@ const FloatingSkillsSection: React.FC = () => {
       animationType="fadeInLeft"
       className="skills-section space-skills"
       delay={200}
+      id='skills'
     >
       <h2>Technical Skills</h2>
       <p className="skills-subtitle">🪐 Drag the tech planets around the galaxy! 🌟</p>

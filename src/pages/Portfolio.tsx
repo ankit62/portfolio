@@ -9,7 +9,7 @@ import instagram from "../icons/instagram.png";
 import linkedin from "../icons/linkedin.png";
 import { useVisibilityAnimation } from "../hooks/useVisibilityAnimation";
 import FloatingSkillsSection from "../components/FloatingSkillsSection";
-
+import MobileSkillsSection from "../components/MobileSkillsSection";
 
 const Portfolio = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -52,13 +52,70 @@ const Portfolio = () => {
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      const isTouchDevice =
+        "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+      const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+      const aspectRatio = screenWidth / screenHeight;
+
+      // Device classification logic
+      let shouldUseMobile = false;
+
+      if (screenWidth < 768) {
+        // Phone range
+        shouldUseMobile = true;
+      } else if (screenWidth >= 768 && screenWidth <= 1024) {
+        // Tablet range - need to distinguish between tablets and small laptops
+        if (isTouchDevice && !hasFinePointer) {
+          // Primary input is touch (tablets)
+          shouldUseMobile = true;
+        } else if (isTouchDevice && hasFinePointer && aspectRatio <= 1.3) {
+          // Has both touch and mouse/trackpad but is portrait/square (tablet)
+          shouldUseMobile = true;
+        } else {
+          // Small laptop or device primarily used with mouse/trackpad
+          shouldUseMobile = false;
+        }
+      } else {
+        // 1025px and above - Always laptop/desktop
+        // Even touch-enabled laptops should use desktop interface
+        shouldUseMobile = false;
+      }
+
+      setIsMobile(shouldUseMobile);
     };
 
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
 
-    return () => window.removeEventListener("resize", checkScreenSize);
+    // Listen for input method changes
+    const mediaQueries = [
+      window.matchMedia("(pointer: coarse)"),
+      window.matchMedia("(pointer: fine)"),
+    ];
+
+    const handleMediaChange = () => checkScreenSize();
+
+    mediaQueries.forEach((mq) => {
+      if (mq.addListener) {
+        mq.addListener(handleMediaChange);
+      } else {
+        mq.addEventListener("change", handleMediaChange);
+      }
+    });
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+      mediaQueries.forEach((mq) => {
+        if (mq.removeListener) {
+          mq.removeListener(handleMediaChange);
+        } else {
+          mq.removeEventListener("change", handleMediaChange);
+        }
+      });
+    };
   }, []);
 
   return (
@@ -127,66 +184,15 @@ const Portfolio = () => {
         </div>
       </AnimatedSection>
 
-      {/* About Section */}
-      <AnimatedSection
-        animationType="fadeInLeft"
-        className="about-section"
-        delay={100}
-        id="about"
-      >
-        <div className="about-container">
-          <div className="about-content">
-            <h2>Ankit Sinha</h2>
-            <p className="about-subtitle">React web developer</p>
-            <p className="about-description">
-              A passionate individual who always thrives to work on end to end
-              products which develop sustainable and scalable social and
-              technical systems to create impact.
-            </p>
-
-            {/* Social Links */}
-            <div className="social-links">
-              <a
-                className="social-link"
-                href="https://www.linkedin.com/in/ankitsinha62"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={linkedin} alt="linkedin" height={45} width={45} />
-              </a>
-              <a
-                className="social-link"
-                href="https://www.facebook.com/profile.php?id=100008067193422"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={facebook} alt="facebook" height={45} width={45} />
-              </a>
-              <a
-                className="social-link"
-                href="https://www.instagram.com/viper_blaze/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={instagram} alt="instagram" height={45} width={45} />
-              </a>
-            </div>
-          </div>
-
-          <div className="about-illustration">
-            <img className="animated-image" src={image} alt="about" />
-          </div>
-        </div>
-      </AnimatedSection>
-
       {/* Skills Section - Option 2: 3D Flip Cards */}
-      {!isMobile && <FloatingSkillsSection />}
+      {!isMobile ? <FloatingSkillsSection /> : <MobileSkillsSection />}
 
       {/* Experience Section */}
       <AnimatedSection
         animationType="scaleIn"
         className="experience-section"
         delay={300}
+        id="experience"
       >
         <div className="experience-section-content">
           <div className="section-header">

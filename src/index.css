@@ -23,3 +23,9 @@ html {
 a {
     all: unset;
 }
+
+html, body, .App {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  margin: 0;
+  padding: 0;
+}
