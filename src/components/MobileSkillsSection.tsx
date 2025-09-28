@@ -31,6 +31,10 @@ interface SocialApp {
   color: string;
   type: "social";
   url: string;
+  deepLink: {
+    ios: string;
+    android: string;
+  };
 }
 
 type AppItem = Skill | SocialApp;
@@ -76,6 +80,11 @@ const MobileSkillsSection: React.FC = () => {
       color: "#0A66C2",
       type: "social",
       url: "https://www.linkedin.com/in/ankitsinha62",
+      deepLink: {
+        ios: "linkedin://profile/ankitsinha62",
+        android:
+          "intent://profile/ankitsinha62#Intent;package=com.linkedin.android;scheme=linkedin;end",
+      },
     },
     {
       icon: instagramIcon,
@@ -83,6 +92,11 @@ const MobileSkillsSection: React.FC = () => {
       color: "#E4405F",
       type: "social",
       url: "https://www.instagram.com/viper_blaze/",
+      deepLink: {
+        ios: "instagram://user?username=viper_blaze",
+        android:
+          "intent://instagram.com/_u/viper_blaze#Intent;package=com.instagram.android;scheme=https;end",
+      },
     },
     {
       icon: facebookIcon,
@@ -90,6 +104,11 @@ const MobileSkillsSection: React.FC = () => {
       color: "#1877F2",
       type: "social",
       url: "https://www.facebook.com/profile.php?id=100008067193422",
+      deepLink: {
+        ios: "fb://profile/100008067193422", // Get your Facebook profile ID
+        android:
+          "intent://facebook.com/100008067193422#Intent;package=com.facebook.katana;scheme=https;end",
+      },
     },
   ];
 
@@ -151,17 +170,85 @@ const MobileSkillsSection: React.FC = () => {
     setCurrentScreen(0);
   };
 
+  const openSocialApp = async (app: SocialApp) => {
+    const isMobile =
+      /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+
+    // Deep link URLs for each platform
+    const deepLinks = {
+      linkedin: {
+        ios: "linkedin://profile/ankitsinha62",
+        android:
+          "intent://profile/ankitsinha62#Intent;package=com.linkedin.android;scheme=linkedin;end",
+        web: app.url,
+      },
+      instagram: {
+        ios: "instagram://user?username=ankit_sinha62",
+        android:
+          "intent://instagram.com/_u/ankit_sinha62#Intent;package=com.instagram.android;scheme=https;end",
+        web: app.url,
+      },
+      facebook: {
+        ios: "fb://profile/100001234567890", // Your FB profile ID
+        android:
+          "intent://facebook.com/ankit.sinha62#Intent;package=com.facebook.katana;scheme=https;end",
+        web: app.url,
+      },
+    };
+
+    const platformKey = app.name.toLowerCase() as keyof typeof deepLinks;
+    const links = deepLinks[platformKey];
+
+    if (!links || !isMobile) {
+      // Desktop or unknown platform - open web URL
+      window.open(app.url, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+
+    let appUrl = "";
+
+    if (isIOS && links.ios) {
+      appUrl = links.ios;
+    } else if (isAndroid && links.android) {
+      appUrl = links.android;
+    }
+
+    if (appUrl) {
+      try {
+        // Modern approach using window.location
+        window.location.href = appUrl;
+
+        // Fallback after delay
+        setTimeout(() => {
+          if (document.hasFocus()) {
+            // If still on page, app didn't open - use web URL
+            window.open(links.web, "_blank", "noopener,noreferrer");
+          }
+        }, 2000);
+      } catch (error) {
+        // If deep link fails, open web URL
+        window.open(links.web, "_blank", "noopener,noreferrer");
+      }
+    } else {
+      // No deep link available - open web URL
+      window.open(links.web, "_blank", "noopener,noreferrer");
+    }
+  };
+
   const handleAppTap = (app: AppItem) => {
-    // Add haptic feedback for touch devices
     if ("vibrate" in navigator) {
       navigator.vibrate(50);
     }
 
     if (app.type === "social") {
-      // Open social media profile
+      // Always open in browser - works everywhere
       window.open(app.url, "_blank", "noopener,noreferrer");
     } else {
-      // Handle skill tap (you can add more interaction here)
       console.log(`Tapped on ${app.name} skill`);
     }
   };
@@ -177,7 +264,7 @@ const MobileSkillsSection: React.FC = () => {
   console.log("Current screen:", currentScreen);
 
   return (
-    <section className="mobile-skills-section">
+    <section id="skills" className="mobile-skills-section">
       <div className="mobile-skills-container">
         {/* Header */}
         <div className="skills-header">
