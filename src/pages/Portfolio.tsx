@@ -135,6 +135,7 @@ const Portfolio = () => {
         animationType="fadeInRight"
         className="experience-section"
         delay={300}
+        id="experience"
       >
         <div className="experience-section-content">
           <div className="section-header">
