@@ -127,64 +127,12 @@ const Portfolio = () => {
         </div>
       </AnimatedSection>
 
-      {/* About Section */}
-      <AnimatedSection
-        animationType="fadeInLeft"
-        className="about-section"
-        delay={100}
-        id="about"
-      >
-        <div className="about-container">
-          <div className="about-content">
-            <h2>Ankit Sinha</h2>
-            <p className="about-subtitle">React web developer</p>
-            <p className="about-description">
-              A passionate individual who always thrives to work on end to end
-              products which develop sustainable and scalable social and
-              technical systems to create impact.
-            </p>
-
-            {/* Social Links */}
-            <div className="social-links">
-              <a
-                className="social-link"
-                href="https://www.linkedin.com/in/ankitsinha62"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={linkedin} alt="linkedin" height={45} width={45} />
-              </a>
-              <a
-                className="social-link"
-                href="https://www.facebook.com/profile.php?id=100008067193422"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={facebook} alt="facebook" height={45} width={45} />
-              </a>
-              <a
-                className="social-link"
-                href="https://www.instagram.com/viper_blaze/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={instagram} alt="instagram" height={45} width={45} />
-              </a>
-            </div>
-          </div>
-
-          <div className="about-illustration">
-            <img className="animated-image" src={image} alt="about" />
-          </div>
-        </div>
-      </AnimatedSection>
-
       {/* Skills Section - Option 2: 3D Flip Cards */}
       {!isMobile && <FloatingSkillsSection />}
 
       {/* Experience Section */}
       <AnimatedSection
-        animationType="scaleIn"
+        animationType="fadeInRight"
         className="experience-section"
         delay={300}
       >
