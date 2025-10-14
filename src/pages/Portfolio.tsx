@@ -163,9 +163,6 @@ const Portfolio = () => {
                 <path d="M5 12h14m-7-7l7 7-7 7" />
               </svg>
             </button>
-            <button className="cta-secondary">
-              <span>View My Work</span>
-            </button>
           </div>
         </div>
 
